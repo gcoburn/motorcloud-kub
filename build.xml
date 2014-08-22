@@ -15,7 +15,11 @@
 	</tstamp>
 	<property name="build-directory" value="temp" />
 
-	<target name="war" depends="">
+	<target name="compile" depends="">
+			<javac includeantruntime="true" srcdir="./src" destdir="./src" />
+	</target>
+
+	<target name="war" depends="compile">
 		<mkdir dir="${build-directory}" />
 		<delete file="${build-directory}/${war-file-name}" />
 		<war warfile="${build-directory}/${war-file-name}" webxml="${web-xml-file}">
