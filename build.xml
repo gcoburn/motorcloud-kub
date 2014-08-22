@@ -29,7 +29,7 @@
 				<attribute name="Built-On" value="${build-info.current-date}" />
 				<attribute name="Built-At" value="${build-info.current-time}" />
 			</manifest>
-			<classes dir="/src"/>
+			<classes dir="src"/>
 		</war>
 	</target>
 	
