@@ -16,11 +16,12 @@
 	<property name="build-directory" value="temp" />
 
 	<path id="project-classpath">
-			<fileset dir="WebContent/WEB-INF/lib" includes="*.jar" />
+		<fileset dir="WebContent/WEB-INF/lib" includes="*.jar" />
 	</path>
 	
 	<target name="compile" depends="">
-			<javac includeantruntime="true" srcdir="./src" destdir="${classes-directory}"  classpathref="project-classpath" />
+		<mkdir dir="${classes-directory}" />
+		<javac includeantruntime="true" srcdir="./src" destdir="${classes-directory}"  classpathref="project-classpath" />
 	</target>
 
 	<target name="war" depends="compile">
