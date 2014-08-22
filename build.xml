@@ -21,7 +21,7 @@
 	
 	<target name="compile" depends="">
 		<mkdir dir="${classes-directory}" />
-		<javac includeantruntime="true" srcdir="./src" destdir="${classes-directory}"  classpathref="project-classpath" />
+		<javac includeantruntime="true" srcdir="./src" destdir="./src"  classpathref="project-classpath" />
 	</target>
 
 	<target name="war" depends="compile">
