@@ -63,23 +63,14 @@ public class RegisterBassPlayer extends HttpServlet {
 		checkRequiredField(firstName, "First Name", noFieldsEntered, m);
 		checkRequiredField(lastName, "Last Name", noFieldsEntered, m);
 		checkRequiredField(email, "Email address", noFieldsEntered, m);
-//		checkRequiredField(stageName, "Stage Name", noFieldsEntered, m);
-//		checkRequiredField(catchPhrase, "Catch Phrase", noFieldsEntered, m);
-//		checkRequiredField(miniBio, "Mini Bio", noFieldsEntered, m);
+		checkRequiredField(stageName, "Stage Name", noFieldsEntered, m);
+		checkRequiredField(catchPhrase, "Catch Phrase", noFieldsEntered, m);
+		checkRequiredField(miniBio, "Mini Bio", noFieldsEntered, m);
 //		checkRequiredField(twitterId, "Twitter ID", noFieldsEntered, m);
 
-		// Certain fiels get a special exception since we don't want to REQUIRE twitter
+		// Certain fields get a special exception since we don't want to REQUIRE twitter
 		if(twitterId ==null||twitterId.length()==0){
 			twitterId = new String(" ");
-		}
-		if(stageName ==null||stageName.length()==0){
-			stageName = new String(" ");
-		}
-		if(catchPhrase ==null||catchPhrase.length()==0){
-			catchPhrase = new String(" ");
-		}
-		if(miniBio ==null||miniBio.length()==0){
-			miniBio = new String(" ");
 		}
 		
 		// Check that all fields are of proper length (or shorter)
@@ -90,8 +81,6 @@ public class RegisterBassPlayer extends HttpServlet {
 		checkFieldLength(stageName, "Stage Name", 100, m);
 		checkFieldLength(catchPhrase, "Catch Phrase", 100, m);
 		checkFieldLength(miniBio, "Mini Bio", 500, m);
-
-
 
 		if (m.isEmpty()) {
 
