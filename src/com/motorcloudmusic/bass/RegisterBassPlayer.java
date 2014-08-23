@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 import com.motorcloudmusic.bass.util.FormUtils;
 import com.motorcloudmusic.bass.util.MessageFactory;
 
-
 /**
  * Servlet implementation class RegisterBassPlayer
  */
@@ -39,7 +38,7 @@ public class RegisterBassPlayer extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		request.getRequestDispatcher("/index.jsp").include(request, response);
+		request.getRequestDispatcher("/enter.jsp").include(request, response);
 	}
 
 	/**
@@ -64,10 +63,16 @@ public class RegisterBassPlayer extends HttpServlet {
 		checkRequiredField(firstName, "First Name", noFieldsEntered, m);
 		checkRequiredField(lastName, "Last Name", noFieldsEntered, m);
 		checkRequiredField(email, "Email address", noFieldsEntered, m);
-		checkRequiredField(twitterId, "Twitter ID", noFieldsEntered, m);
 		checkRequiredField(stageName, "Stage Name", noFieldsEntered, m);
 		checkRequiredField(catchPhrase, "Catch Phrase", noFieldsEntered, m);
 		checkRequiredField(miniBio, "Mini Bio", noFieldsEntered, m);
+		// Twitter is a special exception since we don't want to REQUIRE twitter
+		if(twitterId ==null||twitterId.length()==0){
+			twitterId = new String(" ");
+		}
+		
+		checkRequiredField(twitterId, "Twitter ID", noFieldsEntered, m);
+
 
 		// Check that all fields are of proper length (or shorter)
 		checkFieldLength(firstName, "First Name", 100, m);
@@ -86,14 +91,13 @@ public class RegisterBassPlayer extends HttpServlet {
 				// create a mysql database connection
 				Class.forName("com.mysql.jdbc.Driver");
 
-				
-				InitialContext ctx = new InitialContext();
-				Context envctx = (Context) ctx.lookup("java:comp/env");
-				DataSource ds = (DataSource) envctx.lookup("jdbc/PlayerList");
-				Connection conn = ds.getConnection();				 
-				 
+				Context initContext = new InitialContext();
+				Context envContext  = (Context)initContext.lookup("java:comp/env");
+				DataSource ds = (DataSource)envContext.lookup("jdbc/PlayerList");
+				Connection conn = ds.getConnection();
+
 				// the mysql insert statement
-				String query = " insert into Players (first_name, last_name, email_id, twitter_id, stage_name,catch_phrase,mini_bio)"
+				String query = " insert into players (first_name, last_name, email_id, twitter_id, stage_name,catch_phrase,mini_bio)"
 						+ " values (?, ?, ?, ?, ?,?,?)";
 
 				// create the mysql insert preparedstatement
