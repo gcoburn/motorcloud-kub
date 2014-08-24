@@ -57,18 +57,30 @@ public class RegisterBassPlayer extends HttpServlet {
 		String stageName = request.getParameter("sname");
 		String catchPhrase = request.getParameter("cphrase");
 		String miniBio = request.getParameter("minibio");
-
+		String contactMe = request.getParameter("contactMe");
+		
 		MessageFactory m = new MessageFactory();
 
 		// Check that all fields have been filled in
 		checkRequiredField(firstName, "First Name", noFieldsEntered, m);
 		checkRequiredField(lastName, "Last Name", noFieldsEntered, m);
 		checkRequiredField(email, "Email address", noFieldsEntered, m);
-		checkRequiredField(twitterId, "Twitter ID", noFieldsEntered, m);
 		checkRequiredField(stageName, "Stage Name", noFieldsEntered, m);
 		checkRequiredField(catchPhrase, "Catch Phrase", noFieldsEntered, m);
 		checkRequiredField(miniBio, "Mini Bio", noFieldsEntered, m);
 
+		// Twitter gets a special exception since we don't want to REQUIRE twitter
+		if(twitterId ==null||twitterId.length()==0){
+			twitterId = " ";
+		}
+		
+		// Check for "contact me" checkbox
+		if(contactMe!=null){
+			contactMe = "Y";
+		} else{
+			contactMe="N";
+		}
+		
 		// Check that all fields are of proper length (or shorter)
 		checkFieldLength(firstName, "First Name", 100, m);
 		checkFieldLength(lastName, "Last Name", 100, m);
@@ -93,8 +105,8 @@ public class RegisterBassPlayer extends HttpServlet {
 				Connection conn = ds.getConnection();				 
 				 
 				// the mysql insert statement
-				String query = " insert into Players (first_name, last_name, email_id, twitter_id, stage_name,catch_phrase,mini_bio)"
-						+ " values (?, ?, ?, ?, ?,?,?)";
+				String query = " insert into Players (first_name, last_name, email_id, twitter_id, stage_name,catch_phrase,mini_bio,contact)"
+						+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
 				// create the mysql insert preparedstatement
 				java.sql.PreparedStatement preparedStmt = conn
@@ -106,6 +118,7 @@ public class RegisterBassPlayer extends HttpServlet {
 				preparedStmt.setString(5, stageName.trim());
 				preparedStmt.setString(6, catchPhrase.trim());
 				preparedStmt.setString(7, miniBio.trim());
+				preparedStmt.setString(8, contactMe);
 
 				// execute the preparedstatement
 				preparedStmt.execute();
