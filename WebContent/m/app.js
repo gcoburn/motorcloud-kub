@@ -15,14 +15,14 @@ Ext.application({
                 title: 'Home',
                 iconCls: 'home',
                 cls: 'home',
-                html: ['<img height="260" src="http://staging.sencha.com/img/sencha.png" />', '<h1>Welcome to Sencha Touch</h1>', "<p>Building the Getting Started app</p>", '<h2>Sencha Touch (2.0.0)</h2>'].join("")
+                html: ['<img height="471" src="/bassSearchMobile.jpg" />', ' ', " ", ' '].join("")
             },
 
             // This is the recent blogs page. It uses a tree store to load its data from blog.json
             {
                 xtype: 'nestedlist',
-                title: 'Blog',
-                iconCls: 'star',
+                title: 'List',
+                iconCls: 'user',
                 cls: 'blog',
                 displayField: 'title',
 
@@ -65,15 +65,15 @@ Ext.application({
             // This is the contact page, which features a form and a button. The button submits the form
             {
                 xtype: 'formpanel',
-                title: 'Contact Us',
-                iconCls: 'user',
+                title: 'Enter!',
+                iconCls: 'star',
                 url: 'contact.php',
                 layout: 'vbox',
 
                 items: [{
                     xtype: 'fieldset',
-                    title: 'Contact Us',
-                    instructions: 'Email address is optional',
+                    title: 'Enter to win!',
+                    instructions: 'Give us all you got!!!',
 
                     items: [{
                         xtype: 'textfield',
