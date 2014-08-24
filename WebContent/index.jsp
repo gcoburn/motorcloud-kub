@@ -85,6 +85,12 @@
 				<label for="twitterid">TWITTER ID:</label>
 				<input type="text" id="emailaddress" value="" name="twitterid"  maxlength="100"/>
 				</p>
+        		<p>
+				<label for="twitterid">SEND DOCS:</label>
+				<input type="checkbox" id="contactMe" value="" name="contactMe"/>
+				</p>
+
+					
 		  <div style="color:#ffffff; width:400px; margin-top:20px; text-align:center; font-family:Arial, Helvetica, sans-serif; margin: 33px 50px;"><strong>This is how we get a hold of you.</strong><br />
           		<br />We <strong>guarantee</strong> that your information <strong>will not</strong> be shared with any third party for any reason. Your information will <strong>only</strong> be used in relation to this demonstration.</div>
 		</div><!--FORM LEFT END-->
@@ -106,6 +112,7 @@
 					<label for="minibio" style="color:#FFFFFF; text-shadow: -1px -1px 1px #000000;">MINI BIO:</label> 
         	  		<textarea id="comments" rows="5" cols="25" name="minibio" maxlength="500" data-parsley-group="block1" data-parsley-trigger="keyup" required=""  data-parsley-minlength="10" data-parsley-maxlength="500" data-parsley-minlength-message="Come on! If you wanna rock the cloud with us you gotta give us more than 10 characters!!!" data-parsley-validation-threshold="10" data-parsley-id="2026"></textarea></p>
 
+					
 				 <div style="color:#ffffff; width:400px; margin-top:20px; text-align:left; font-family:Arial, Helvetica, sans-serif; margin: 35px 0 33px;">
 					<strong>This is how you could win. :)</strong></div>
 			
