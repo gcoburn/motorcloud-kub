@@ -1,14 +1,11 @@
 package com.motorcloudmusic.bass;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,14 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.google.gson.Gson;
 import com.motorcloudmusic.bass.util.FormUtils;
 import com.motorcloudmusic.bass.util.MessageFactory;
+
 
 /**
  * Servlet implementation class RegisterBassPlayer
  */
-@WebServlet("/mobilefeed")
+@WebServlet("/entermobile")
 public class RegisterBassPlayerMobile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -42,62 +39,7 @@ public class RegisterBassPlayerMobile extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		String sql = null;
-
-		ArrayList<BassPlayer> players = new ArrayList<BassPlayer>();
-
-		try {
-			// create a mysql database connection
-			Class.forName("com.mysql.jdbc.Driver");
-			Context ctx = new InitialContext();
-			Context envctx = (Context) ctx.lookup("java:comp/env");
-			DataSource ds = (DataSource) envctx.lookup("jdbc/PlayerList");
-			conn = ds.getConnection();
-
-			// Get ALL bass players
-			sql = "Select * from players";
-			stmt = conn.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				BassPlayer player = new BassPlayer();
-				player.setCatchPhrase(scrubString(rs.getString("catch_phrase")));
-				player.setEmail(scrubString(rs.getString("email_id")));
-				player.setFirstName(scrubString(rs.getString("first_name")));
-				player.setLastName(scrubString(rs.getString("last_name")));
-				player.setMiniBio(scrubString(rs.getString("mini_bio")));
-				player.setStageName(scrubString(rs.getString("stage_name")));
-				player.setTwitterId(scrubString(rs.getString("twitter_id")));
-				players.add(player);
-			}
-
-			rs.close();
-			stmt.close();
-			stmt = null;
-
-		} catch (Exception e) {
-			System.err.println("Database went BOOM!  Lookie here (below):" + e);
-			System.err.println(e.getMessage());
-		}
-
-		PrintWriter out = response.getWriter();
-		response.setContentType("text/html");
-
-		Gson gson = new Gson();
-		out.println(gson.toJson(players));
-		out.close();
-
-	}
-
-	private String scrubString(String value) {
-		if (FormUtils.isAbsent(value)) {
-			return "";
-		} else {
-			return value.trim();
-		}
-
+		request.getRequestDispatcher("/index_m.jsp").include(request, response);
 	}
 
 	/**
@@ -116,7 +58,7 @@ public class RegisterBassPlayerMobile extends HttpServlet {
 		String catchPhrase = request.getParameter("cphrase");
 		String miniBio = request.getParameter("minibio");
 		String contactMe = request.getParameter("contactMe");
-
+		
 		MessageFactory m = new MessageFactory();
 
 		// Check that all fields have been filled in
@@ -127,19 +69,18 @@ public class RegisterBassPlayerMobile extends HttpServlet {
 		checkRequiredField(catchPhrase, "Catch Phrase", noFieldsEntered, m);
 		checkRequiredField(miniBio, "Mini Bio", noFieldsEntered, m);
 
-		// Twitter gets a special exception since we don't want to REQUIRE
-		// twitter
-		if (twitterId == null || twitterId.length() == 0) {
+		// Twitter gets a special exception since we don't want to REQUIRE twitter
+		if(twitterId ==null||twitterId.length()==0){
 			twitterId = " ";
 		}
-
+		
 		// Check for "contact me" checkbox
-		if (contactMe != null) {
+		if(contactMe!=null){
 			contactMe = "Y";
-		} else {
-			contactMe = "N";
+		} else{
+			contactMe="N";
 		}
-
+		
 		// Check that all fields are of proper length (or shorter)
 		checkFieldLength(firstName, "First Name", 100, m);
 		checkFieldLength(lastName, "Last Name", 100, m);
@@ -149,20 +90,23 @@ public class RegisterBassPlayerMobile extends HttpServlet {
 		checkFieldLength(catchPhrase, "Catch Phrase", 100, m);
 		checkFieldLength(miniBio, "Mini Bio", 500, m);
 
+
+
 		if (m.isEmpty()) {
 
 			try {
 				// create a mysql database connection
 				Class.forName("com.mysql.jdbc.Driver");
 
+				
 				InitialContext ctx = new InitialContext();
 				Context envctx = (Context) ctx.lookup("java:comp/env");
 				DataSource ds = (DataSource) envctx.lookup("jdbc/PlayerList");
-				Connection conn = ds.getConnection();
-
+				Connection conn = ds.getConnection();				 
+				 
 				// the mysql insert statement
-				String query = " insert into players (first_name, last_name, email_id, twitter_id, stage_name,catch_phrase,mini_bio,contact)"
-						+ " values (?, ?, ?, ?, ?,?,?,?)";
+				String query = " insert into Players (first_name, last_name, email_id, twitter_id, stage_name,catch_phrase,mini_bio,contact)"
+						+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
 				// create the mysql insert preparedstatement
 				java.sql.PreparedStatement preparedStmt = conn
@@ -181,34 +125,39 @@ public class RegisterBassPlayerMobile extends HttpServlet {
 
 				conn.close();
 			} catch (Exception e) {
-				System.err.println("Database went BOOM!  Lookie here (below):"
-						+ e);
+				System.err.println("Database went BOOM!  Lookie here (below):" + e);
 				System.err.println(e.getMessage());
 			}
 
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
-			out.println("{success: true, message:'Thank you for entering'}");
-			out.close();
+//			request.getRequestDispatcher("/list_m.jsp")
+//					.forward(request, response);
 
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/list_m.jsp");
+			dispatcher.forward(request,response);
+		
+		
 		} else {
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
-			out.println("{success: false, message:'All fields except a Twitter ID are required.'}");
-			out.close();
+			request.setAttribute("message", m.getMessages());
+//			RequestDispatcher rd = getServletContext().getRequestDispatcher(
+//					"/index_m.jsp");
+//			rd.forward(request, response);
+//			
+//			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
+//			dispatcher.forward(request,response);
+			
+			 request.getRequestDispatcher("/index_m.jsp").forward(request,response);
 
 		}
 
 	}
 
-	private void checkFieldLength(String field, String fieldLabel,
-			int maxLength, MessageFactory m) {
+
+	private void checkFieldLength(String field, String fieldLabel, int maxLength, MessageFactory m) {
 		if (!FormUtils.isAbsent(field)) {
-			if (field.trim().length() >= maxLength) {
-				m.addMessage(fieldLabel + " can only be up to " + maxLength
-						+ " characters.");
+			if(field.trim().length()>=maxLength){
+				m.addMessage(fieldLabel + " can only be up to "+maxLength+" characters.");
 			}
-		}
+		} 
 	}
 
 	private void checkRequiredField(String field, String label,
