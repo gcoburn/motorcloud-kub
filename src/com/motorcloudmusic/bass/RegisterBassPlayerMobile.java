@@ -20,14 +20,14 @@ import com.motorcloudmusic.bass.util.MessageFactory;
 /**
  * Servlet implementation class RegisterBassPlayer
  */
-@WebServlet("/enter")
-public class RegisterBassPlayer extends HttpServlet {
+@WebServlet("/entermobile")
+public class RegisterBassPlayerMobile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public RegisterBassPlayer() {
+	public RegisterBassPlayerMobile() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -39,7 +39,7 @@ public class RegisterBassPlayer extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		request.getRequestDispatcher("/index.jsp").include(request, response);
+		request.getRequestDispatcher("/index_m.jsp").include(request, response);
 	}
 
 	/**
@@ -129,13 +129,23 @@ public class RegisterBassPlayer extends HttpServlet {
 				System.err.println(e.getMessage());
 			}
 
-			request.getRequestDispatcher("/list.jsp")
-					.include(request, response);
+//			request.getRequestDispatcher("/list_m.jsp")
+//					.forward(request, response);
+
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/list_m.jsp");
+			dispatcher.forward(request,response);
+		
+		
 		} else {
 			request.setAttribute("message", m.getMessages());
-			RequestDispatcher rd = getServletContext().getRequestDispatcher(
-					"/index.jsp");
-			rd.forward(request, response);
+//			RequestDispatcher rd = getServletContext().getRequestDispatcher(
+//					"/index_m.jsp");
+//			rd.forward(request, response);
+//			
+//			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
+//			dispatcher.forward(request,response);
+			
+			 request.getRequestDispatcher("/index_m.jsp").forward(request,response);
 
 		}
 
