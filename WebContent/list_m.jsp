@@ -12,7 +12,6 @@
 	
 
 	
-	
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,8 +39,9 @@ background:#ffffff;
 <body>
 
 <div data-role="page" style="background-color:#000000; background:url(images/bg.jpg); background-position:center top;">
+  
   <div data-role="header" style="color:#000000; background:url(images/bg_header.jpg); background-position:center top;">
-    <h3>Player Results </h3>
+    <h3>Player Results!    </h3><a href="list_m.jsp" class="ui-btn ui-btn-inline">Refresh</a> 
   </div>
   
   <div data-role="main" class="ui-content">
@@ -54,8 +54,8 @@ background:#ffffff;
         </tr>
       </thead>
       <tbody>
-      
- 		<c:forEach var="row" items="${rs.rows}">
+ 
+		<c:forEach var="row" items="${rs.rows}">
 
         <tr>
           <td><strong>${row.stage_name} </strong></td>
@@ -66,10 +66,9 @@ background:#ffffff;
 		</c:forEach>	
 
         
-        
-        
-        
-        
+ 
+
+
       </tbody>
     </table>
   </div>
