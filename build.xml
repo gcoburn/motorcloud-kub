@@ -14,7 +14,7 @@
 		<format property="current-date" pattern="d-MMMM-yyyy" locale="en" />
 		<format property="current-time" pattern="hh:mm:ss a z" locale="en" />
 	</tstamp>
-	<property name="build-directory" value="temp" />
+	<property name="build-directory" value="." />
 
 	<path id="project-classpath">
 		<fileset dir="WebContent/WEB-INF/lib" includes="*.jar" />
